@@ -5,7 +5,7 @@ require 'production_log/analyzer'
 file_name = ARGV.shift
 
 if file_name.nil? then
-  puts "Usage: #{$0} file_name [-e email_recipient [-s subject]] [count]"
+  puts "Usage: #{$0} file_name [-e email_recipient [-s subject]] [filter_word]"
   exit 1
 end
 
@@ -22,13 +22,12 @@ if email_recipient and ARGV.first == '-s' then
   subject = ARGV.shift
 end
 
-count = ARGV.shift
-count = count.nil? ? 10 : Integer(count)
+filter_word = ARGV.shift
 
 if email_recipient.nil? then
-  analyzer = Analyzer.new file_name
+  analyzer = Analyzer.new(file_name, filter_word)
   analyzer.process
-  puts analyzer.report(count)
+  puts analyzer.report(10)
 else
   Analyzer.email file_name, email_recipient, subject, count
 end
