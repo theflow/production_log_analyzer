@@ -124,7 +124,7 @@ module LogParser
   # Log entries are recognised as starting with Processing, continuing with
   # the same process id through Completed.
 
-  def self.parse(stream) # :yields: log_entry
+  def self.parse(stream, filter_word = nil) # :yields: log_entry
     buckets = Hash.new { |h,k| h[k] = [] }
     comp_count = Hash.new 0
 
@@ -145,6 +145,7 @@ module LogParser
         next unless comp_count[bucket] == 0
         entry = buckets.delete bucket
         next unless entry.any? { |l| l =~ /^Processing/ }
+        next unless data =~ /\[#{filter_word}\]/ if filter_word
         yield LogEntry.new(entry)
       end
     end

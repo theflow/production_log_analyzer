@@ -171,8 +171,9 @@ class Analyzer
   ##
   # Creates a new Analyzer that will read data from +logfile_name+.
 
-  def initialize(logfile_name)
+  def initialize(logfile_name, filter_word = nil)
     @logfile_name  = logfile_name
+    @filter_word   = filter_word
     @request_times = Hash.new { |h,k| h[k] = [] }
     @db_times      = Hash.new { |h,k| h[k] = [] }
     @render_times  = Hash.new { |h,k| h[k] = [] }
@@ -183,7 +184,7 @@ class Analyzer
 
   def process
     File.open @logfile_name do |fp|
-      LogParser.parse fp do |entry|
+      LogParser.parse(fp, @filter_word) do |entry|
         entry_page = entry.page
         next if entry_page.nil?
         @request_times[entry_page] << entry.request_time
