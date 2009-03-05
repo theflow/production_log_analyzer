@@ -141,10 +141,10 @@ class Analyzer
   # Generates and sends an email report with lots of fun stuff in it.  This
   # way, Mail.app will behave when given tabs.
 
-  def self.email(file_name, recipient, subject, count = 10)
-    analyzer = self.new file_name
+  def self.email(file_name, recipient, subject, filter_word = nil)
+    analyzer = self.new(file_name, filter_word)
     analyzer.process
-    body = analyzer.report count
+    body = analyzer.report(10)
 
     email = self.envelope(recipient, subject)
     email << nil

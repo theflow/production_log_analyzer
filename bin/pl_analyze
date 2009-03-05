@@ -29,6 +29,6 @@ if email_recipient.nil? then
   analyzer.process
   puts analyzer.report(10)
 else
-  Analyzer.email file_name, email_recipient, subject, count
+  Analyzer.email file_name, email_recipient, subject, filter_word
 end
 
