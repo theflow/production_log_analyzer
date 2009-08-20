@@ -81,6 +81,18 @@ module LogParser
           @page = $1
           @ip   = $2
           @time = $3
+        # Rails 2.3
+        when /Completed in (\d+)ms \(View: (\d*), DB: (\d*)\)/ then
+          next if @in_component > 0
+          @request_time = $1.to_f / 1000
+          @render_time = $2.to_f / 1000
+          @db_time = $3.to_f / 1000
+        when /Completed in (\d+)ms \(DB: (\d*)\)/ then # Redirect
+          next if @in_component > 0
+          @request_time = $1.to_f / 1000
+          @render_time = 0
+          @db_time = $2.to_f / 1000
+        # Rails < 2.3
         when /^Completed in ([\S]+) .+ Rendering: ([\S]+) .+ DB: ([\S]+)/ then
           next if @in_component > 0
           @request_time = $1.to_f
