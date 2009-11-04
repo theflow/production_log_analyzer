@@ -88,7 +88,8 @@ module LogParser
           @render_time = $2.to_f / 1000
           @db_time = $3.to_f / 1000
         # Rails 2.3 with time_bandits
-        when /Completed in ([\S]+)ms \(View: ([\S]+), DB: ([\S]+)\((\d+),(\d+)\), MC: ([\S]+)\((\d+)r,(\d+)m\), GC: ([\S]+)\((\d+)\)\)/ then
+        # when /Completed in ([\S]+)ms \(View: ([\S]+), DB: ([\S]+)\((\d+),(\d+)\), MC: ([\S]+)\((\d+)r,(\d+)m\), GC: ([\S]+)\((\d+)\)\)/ then
+        when /Completed in ([\S]+)ms \(View: ([\S]+), DB: ([\S]+)\((\d+),(\d+)\)/ then
           next if @in_component > 0
           @request_time = $1.to_f / 1000
           @render_time = $2.to_f / 1000
